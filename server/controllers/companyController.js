@@ -25,53 +25,121 @@ function generateRandomNumber() {
 
 async function sendOTP(email) {
   try {
+
     let otp = generateRandomNumber()
 
-    // style otp 
+    // Modern & Clean HTML Email Template
+    const htmlTemplate = `
+    <div style="font-family:Arial, Helvetica, sans-serif; background:#f7f7f7; padding:30px;">
+      <div style="max-width:500px; margin:auto; background:#ffffff; border-radius:10px; padding:25px; box-shadow:0 3px 12px rgba(0,0,0,0.1);">
+
+        <h2 style="text-align:center; color:#222; border-bottom:1px solid #eee; padding-bottom:10px;">
+          Company Email Verification
+        </h2>
+
+        <p style="color:#333; font-size:15px;">
+          Dear User,
+          <br><br>
+          Please use the OTP below to verify your company email address.
+          <br>
+          This OTP is valid for <b>5 minutes</b>.
+        </p>
+
+        <div style="text-align:center; background:#e8f3ff; border:1px dashed #0077ff; padding:15px; margin:25px 0; border-radius:8px;">
+          <h1 style="color:#0077ff; font-size:42px; margin:0;">${otp}</h1>
+        </div>
+
+        <p style="color:#444; font-size:14px;">
+          If you did not request this email verification, you can ignore this email.
+        </p>
+
+        <p style="text-align:center; color:#777; font-size:13px; margin-top:25px;">
+          Regards,<br>
+          <b>Your Company Support Team</b>
+        </p>
+
+      </div>
+    </div>
+    `;
+
     let emailOptions = {
       from: process.env.COMPANY_EMAIL,
       to: email,
-      subject: "Verify your company email ",
-      html: `<h1>Use the OTP <i>${otp}</i>to verify your company email | OTP valid for 5 mins</h1>`
+      subject: "Verify Your Company Email | OTP Valid 5 Minutes",
+      html: htmlTemplate
     }
 
     await transporter.sendMail(emailOptions)
 
     redisClient.setEx(`email:${email}`, 300, otp.toString())
 
-    return { message: "OTP sent successfully !", status: true }
+    return { message: "OTP sent successfully!", status: true }
 
   } catch (err) {
     console.log("error sending otp : ", err)
-    return { message: "unable to send otp !", status: false }
+    return { message: "unable to send otp!", status: false }
   }
 }
 
+
 async function sendOTPForPasswordReset(email) {
   try {
+
     let otp = generateRandomNumber()
+
+    // Styled HTML Template for Password Reset
+    const htmlTemplate = `
+    <div style="font-family:Arial, Helvetica, sans-serif; background:#f7f7f7; padding:30px;">
+      <div style="max-width:500px; margin:auto; background:#ffffff; border-radius:10px; padding:25px; box-shadow:0 3px 12px rgba(0,0,0,0.1);">
+
+        <h2 style="text-align:center; color:#222; border-bottom:1px solid #eee; padding-bottom:10px;">
+          Password Reset Request
+        </h2>
+
+        <p style="color:#333; font-size:15px;">
+          Dear User,
+          <br><br>
+          We received a request to reset your account password.
+          <br>
+          Please use the OTP below to continue. OTP is valid for <b>5 minutes</b>.
+        </p>
+
+        <div style="text-align:center; background:#fff4e6; border:1px dashed #ff8c00; padding:15px; margin:25px 0; border-radius:8px;">
+          <h1 style="color:#ff8c00; font-size:42px; margin:0;">${otp}</h1>
+        </div>
+
+        <p style="color:#444; font-size:14px;">
+          If you did not request a password reset, please ignore this message.
+        </p>
+
+        <p style="text-align:center; color:#777; font-size:13px; margin-top:25px;">
+          Regards,<br>
+          <b>Your Company Support Team</b>
+        </p>
+
+      </div>
+    </div>
+    `;
 
     let emailOptions = {
       from: process.env.COMPANY_EMAIL,
       to: email,
-      subject: "Password Reset Request !",
-      html: `<h1>Your password reset otp is ${otp} .</h1>`
+      subject: "Password Reset | OTP Valid for 5 Minutes",
+      html: htmlTemplate
     }
 
     await transporter.sendMail(emailOptions)
 
     redisClient.setEx(`emailPasswordReset:${email}`, 300, otp.toString())
 
-    return { message: "otp sent successfully !", status: true }
-
-
+    return { message: "OTP sent successfully!", status: true }
 
   } catch (err) {
     console.log("error sending otp : ", err)
-    return { message: "unable to send otp !", status: false }
-
+    return { message: "Unable to send OTP!", status: false }
   }
 }
+
 
 let handleCompanyRegister = async (req, res) => {
   try {
