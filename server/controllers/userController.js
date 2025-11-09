@@ -28,24 +28,57 @@ async function sendOTP(email) {
 
         let otp = genrateRandomNumber()
 
+        // HTML TEMPLATE
+        const htmlTemplate = `
+        <div style="font-family:Arial, Helvetica, sans-serif; background:#f7f7f7; padding:30px;">
+          <div style="max-width:500px; margin:auto; background:#ffffff; border-radius:10px; padding:25px; box-shadow:0 3px 12px rgba(0,0,0,0.1);">
+            
+            <h2 style="text-align:center; color:#222; border-bottom:1px solid #eee; padding-bottom:10px;">
+              Email Verification OTP
+            </h2>
+
+            <p style="color:#333; font-size:15px;">
+              Dear User,
+              <br><br>
+              Use the OTP below to verify your email. This OTP is valid for <b>5 minutes</b>.
+            </p>
+
+            <div style="text-align:center; background:#e8f3ff; border:1px dashed #0077ff; padding:15px; margin:25px 0; border-radius:8px;">
+              <h1 style="color:#0077ff; font-size:42px; margin:0;">${otp}</h1>
+            </div>
+
+            <p style="color:#444; font-size:14px;">
+              If you did not request this OTP, please ignore this email.
+            </p>
+
+            <p style="text-align:center; color:#777; font-size:13px; margin-top:25px;">
+              Regards,<br>
+              <b><h3>JobStack@coryrightcompany</h3></b>
+            </p>
+
+          </div>
+        </div>
+        `;
+
         let emailOptions = {
             from: process.env.USER_EMAIL,
             to: email,
-            subject: "your otp to verify email address | valid for 5 mins !",
-            text: `your otp is ${otp} !`,
+            subject: "Verify Your Email Address | OTP Valid for 5 Minutes",
+            html: htmlTemplate   // ✅ Send HTML instead of plain text
         }
 
         await transporter.sendMail(emailOptions)
 
         redisClient.setEx(`email:${email}`, 300, otp)
 
-        return { messag: "otp sent successfully !", status: true }
+        return { message: "OTP sent successfully!", status: true }
 
     } catch (err) {
         console.log("error sending otp : ", err)
-        return { message: "unable to send otp !", status: false }
+        return { message: "Unable to send OTP!", status: false }
     }
 }
+
 
 
 async function sendOTPForPasswordReset(email) {
@@ -53,24 +86,59 @@ async function sendOTPForPasswordReset(email) {
 
         let otp = genrateRandomNumber()
 
+        // HTML TEMPLATE FOR PASSWORD RESET
+        const htmlTemplate = `
+        <div style="font-family:Arial, Helvetica, sans-serif; background:#f7f7f7; padding:30px;">
+          <div style="max-width:500px; margin:auto; background:#ffffff; border-radius:10px; padding:25px; box-shadow:0 3px 12px rgba(0,0,0,0.1);">
+
+            <h2 style="text-align:center; color:#222; border-bottom:1px solid #eee; padding-bottom:10px;">
+              Password Reset OTP
+            </h2>
+
+            <p style="color:#333; font-size:15px;">
+              Dear User,
+              <br><br>
+              We received a request to reset your password.
+              <br>
+              Use the OTP below to proceed. This OTP is valid for <b>5 minutes</b>.
+            </p>
+
+            <div style="text-align:center; background:#fff4e6; border:1px dashed #ff8c00; padding:15px; margin:25px 0; border-radius:8px;">
+              <h1 style="color:#ff8c00; font-size:42px; margin:0;">${otp}</h1>
+            </div>
+
+            <p style="color:#444; font-size:14px;">
+              If you did not request a password reset, you can safely ignore this email.
+            </p>
+
+            <p style="text-align:center; color:#777; font-size:13px; margin-top:25px;">
+              Regards,<br>
+              <b><h3>JobStack@coryrightcompany</h3></b>
+            </p>
+
+          </div>
+        </div>
+        `;
+
         let emailOptions = {
             from: process.env.USER_EMAIL,
             to: email,
-            subject: "Password Reset Request !",
-            text: `your otp is ${otp} valid for 5 mins please use this otp to reset your password !`,
+            subject: "Password Reset Request | OTP Valid for 5 Minutes",
+            html: htmlTemplate  // ✅ Sending HTML now
         }
 
         await transporter.sendMail(emailOptions)
 
         redisClient.setEx(`emailPasswordReset:${email}`, 300, otp)
 
-        return { messag: "otp sent successfully !", status: true }
+        return { message: "OTP sent successfully!", status: true }
 
     } catch (err) {
         console.log("error sending otp : ", err)
-        return { message: "unable to send otp !", status: false }
+        return { message: "Unable to send OTP!", status: false }
     }
 }
+
 
 let test = (req, res) => {
     res.status(200).json({ message: "welcome to user test route !" })
