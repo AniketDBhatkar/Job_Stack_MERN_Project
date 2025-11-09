@@ -22,7 +22,7 @@ const App = () => {
     formData.append('file', file);
     try {
       const response = await axios.post(
-        'http://localhost:6011/company/upload-file/company_logos',
+        'http://localhost:6011/company/upload-file/company_logo',
         formData,
         {
           headers: {
@@ -30,7 +30,7 @@ const App = () => {
             // user Token 
             // 'Authorization': "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImFuaWtldGJoYXRrYXI3ODZAZ21haWwuY29tIiwiaWF0IjoxNzYyNjc0OTQ0LCJleHAiOjE3NjI3NjEzNDR9.WLsU8h67j59qaJL7nSDGltjsRFl5Dd0n05cxCYiAoF4"
             //  company Token
-            'Authorization':"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImFuaWtldGJoYXRrYXI3ODZAZ21haWwuY29tIiwiaWF0IjoxNzYyNjg5NzQ4LCJleHAiOjE3NjI3NzYxNDh9.8_6RRR03dzPHkJGLwrXE06Re6v1uycAopXKoyUbF5WQ"
+            'Authorization':"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImFuaWtldGJoYXRrYXI3ODZAZ21haWwuY29tIiwiaWF0IjoxNzYyNjkyNjk4LCJleHAiOjE3NjI3NzkwOTh9.m_hfeOIZ8WbETxljsijO1H_DDS2BiWrLnAS1_t57A-Y"
           }
         }
       );

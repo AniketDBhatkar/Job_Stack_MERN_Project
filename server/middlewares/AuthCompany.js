@@ -9,6 +9,8 @@ const AuthCompany = async (req,res,next) => {
         let companyToken = req.headers.authorization;
 
         
+
+        
         if (!companyToken) throw ('token not found or invalid')
 
         let result = jwt.verify(companyToken,process.env.COMPANY_JWT_SECRET_KEY)
@@ -25,6 +27,7 @@ const AuthCompany = async (req,res,next) => {
         next()
     } catch (err) {
         console.log('Company authorization is failed :',err)
+        console.log(companyToken)
         res.status(401).json({message: 'Authorization is failed, please login first!'})
     }
 }
