@@ -7,10 +7,7 @@ dotenv.config({path : './config.env'})
 const AuthCompany = async (req,res,next) => {
     try{
         let companyToken = req.headers.authorization;
-
-        
-
-        
+console.log(companyToken)
         if (!companyToken) throw ('token not found or invalid')
 
         let result = jwt.verify(companyToken,process.env.COMPANY_JWT_SECRET_KEY)
@@ -18,7 +15,6 @@ const AuthCompany = async (req,res,next) => {
         let company = await companyModel.findOne({"email.companyEmail":result.email})
 
         if(!company) throw ('Company not found')
-        
         
         if(!company.email.verified) throw ("Email not verified. Please verify first")
 
