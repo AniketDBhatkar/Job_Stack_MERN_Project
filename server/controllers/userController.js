@@ -124,7 +124,7 @@ async function sendOTPForPasswordReset(email) {
             from: process.env.USER_EMAIL,
             to: email,
             subject: "Password Reset Request | OTP Valid for 5 Minutes",
-            html: htmlTemplate  // ✅ Sending HTML now
+            html: htmlTemplate  // Sending HTML now
         }
 
         await transporter.sendMail(emailOptions)

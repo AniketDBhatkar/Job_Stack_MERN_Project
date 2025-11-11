@@ -162,23 +162,23 @@ let handleCompanyRegister = async (req, res) => {
     // if found then error
     if (checkIfCompanyExists) throw ("uanble to register company please change email/phone and try again !")
 
-    let emailObject = {
-      companyEmail: email, verified: false
-    }
-
-    // to send otp
-
+      let emailObject = {
+        companyEmail: email, verified: false
+      }
+      
+      // to send otp
+      
     let result = await sendOTP(email)
-
+    
     if (!result.status) throw (`unable to send otp at ${email} | ${result.message}`)
-
-    // create company object
-
-    // encrypt password before saving
-
-    let hash = await bcrypt.hash(password, 10)
-
-
+      
+      
+      // encrypt password before saving
+      
+      let hash = await bcrypt.hash(password, 10)
+      
+      
+      // create company object
     let newCompany = new companyModel({
       companyDetails,
       contactPerson,
@@ -295,8 +295,6 @@ let handleResetPasswordRequest = async (req, res) => {
     if (!email) throw ("invalid/incomplete data !")
 
     let companyExists = await companyModel.findOne({ "email.companyEmail": email })
-
-    // console.log(userExists)
 
     if (!companyExists) throw ("invalid email address/Please register first !")
 

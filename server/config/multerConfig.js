@@ -19,13 +19,13 @@ const storage = multer.diskStorage({
             (
                 "upload",
                 fileType === "resume"
-                ? "resumes"
-                : fileType === "profile_picture"
-                ? "profile_picture"
-                : fileType === "logo"
-                ? "company_logos" : "upload"
+                    ? "resumes"
+                    : fileType === "profile_picture"
+                        ? "profile_picture"
+                        : fileType === "logo"
+                            ? "company_logos" : "upload"
             )
-    
+
 
         cb(null, uploadPath)
 
